@@ -12,86 +12,81 @@ import collections
 
 
 class Solution:
-    @staticmethod
-    def preorder_traversal(root: TreeNode) -> [int]:
+    def __init__(self):
+        self.result = []
+
+    def pre_order_traversal(self, root: TreeNode) -> [int]:
         """
         前序非递归遍历
         :param root:
         :return:
         """
-        result = []
         if root is None:
-            return result
-        s = [root]
-        while len(s) > 0:
-            node = s.pop()
-            result.append(node.val)
-            if node.right is not None:
-                s.append(node.right)
-            if node.left is not None:
-                s.append(node.left)
-        return result
+            return self.result
+        stack = []
+        while root is not None or len(stack) > 0:
+            while root is not None:
+                self.result.append(root.val)
+                stack.append(root)  # 存储已经遍历的节点, 用于后续回溯右节点
+                root = root.left
+            node = stack.pop()
+            root = node.right
+        return self.result
 
-    @staticmethod
-    def inorder_traversal(root: TreeNode):
+    def in_order_traversal(self, root: TreeNode):
         """
         中序遍历
         :param root:
         :return:
         """
-        s, result = [], []
-        node = root
-        while len(s) > 0 or node is not None:
-            if node is not None:
-                s.append(node)
-                node = node.left
-            else:
-                node = s.pop()
-                result.append(node.val)
-                node = node.right
-        return result
+        stack = []
+        while len(stack) > 0 or root is not None:
+            while root is not None:
+                stack.append(root)
+                root = root.left
 
-    @staticmethod
-    def postorder_traversal(root: TreeNode):
-        s, result = [], []
+            node = stack.pop()
+            self.result.append(node.val)
+            root = root.right
+        return self.result
+
+    def post_order_traversal(self, root: TreeNode):
+        stack = []
         node, last_visit = root, None
-        while len(s) > 0 or node is not None:
+        while len(stack) > 0 or node is not None:
             if node is not None:
-                s.append(node)
+                stack.append(node)
                 node = node.left
             else:
-                node = s[-1]
+                node = stack[-1]
                 if node.right is not None and last_visit != node.right:
                     node = node.right
                 else:
-                    last_visit = s.pop()
-                    result.append(last_visit.val)
-        return result
+                    last_visit = stack.pop()
+                    self.result.append(last_visit.val)
+        return self.result
 
-    @staticmethod
-    def level_order(root: TreeNode):
+    def level_order(self, root: TreeNode):
         """
-
+        层次遍历
         :param root:
         :return:
         """
-        levels = []
         if root is None:
-            return levels
+            return self.result
         bfs = collections.deque([root])
-
         while len(bfs) > 0:
-            levels.append([])
+            self.result.append([])
             level_size = len(bfs)
             for _ in range(level_size):
                 node = bfs.popleft()
-                levels[-1].append(node.val)
+                self.result[-1].append(node.val)
 
                 if node.left is not None:
                     bfs.append(node.left)
                 if node.right is not None:
                     bfs.append(node.right)
-        return levels
+        return self.result
 
     def max_depth(self, root: TreeNode) -> int:
         if root is None:
@@ -99,7 +94,7 @@ class Solution:
         return 1 + max(self.max_depth(root.left), self.max_depth(root.right))
 
     def is_balanced(self, root: TreeNode) -> bool:
-        def depth(root):
+        def depth(root:TreeNode):
             if root is None:
                 return 0, True
 

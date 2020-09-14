@@ -11,6 +11,9 @@
 
 
 class TreeNode:
+    """
+    二叉树的节点
+    """
     def __init__(self, x):
         self.val = x
         self.left = None
@@ -18,6 +21,9 @@ class TreeNode:
 
 
 class ListNode:
-    def __init__(self, x, next=None):
+    """
+    链表的节点
+    """
+    def __init__(self, x):
         self.val = x
-        self.next = next
+        self.next = None
