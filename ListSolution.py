@@ -31,7 +31,7 @@ class Solution:
 
         return head
 
-    def delete_duplicates_v2(self, head: ListNode) -> ListNode:
+    def delete_duplicates_v2(self, head: ListNode):
         """
         给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中   没有重复出现的数字。
         :param head:
@@ -40,42 +40,36 @@ class Solution:
 
         if head is None:
             return head
-        dummy = ListNode()
+        # 链表头结点可能被删除，所以用 dummy node 辅助删除
+        dummy = ListNode(0)
         dummy.next = head
+        head = dummy
 
-        current, peek = dummy, head
-        find_dup = False
-        while peek.next is not None:
-            if peek.next.val == peek.val:
-                find_dup = True
-                peek.next = peek.next.next
+        while head.next is not None and head.next.next is not None:
+            if head.next.val == head.next.next.val:
+                # 记录已经删除的值 用于后续判断
+                rm_val = head.next.val
+                while head.next is not None and head.next.val == rm_val:
+                    head.next = head.next.next
             else:
-                if find_dup:
-                    find_dup = False
-                    current.next = current.next.next
-                else:
-                    current = current.next
-                peek = peek.next
-
-        if find_dup:
-            current.next = current.next.next
+                head = head.next
 
         return dummy.next
 
-    def reverse_list(self, head: ListNode) -> ListNode:
-
-        if head is None:
-            return head
-
-        tail = head
-        while tail.next is not None:
-            # put tail.next to head
-            tmp = tail.next
-            tail.next = tmp.next
-            tmp.next = head
+    def reverse_list(self, head: ListNode):
+        """
+        翻转链表.
+        :param head:
+        :return:
+        """
+        pre = ListNode(0)
+        while head is not None:
+            tmp = head.next
+            head.next = pre
+            pre = head
             head = tmp
+        return pre
 
-        return head
 
     def reverse_between(self, head: ListNode, m: int, n: int) -> ListNode:
         """
@@ -86,7 +80,6 @@ class Solution:
         :return:
         """
 
-        """ 循环迭代 -- 找到前一个节点，反转，重新链接 """
         dummy = ListNode(0)
         dummy.next = head
         pre = dummy
