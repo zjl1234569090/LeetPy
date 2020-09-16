@@ -8,7 +8,7 @@
 @Description:
 """
 
-from StructCollections import ListNode
+from StructCollections import ListNode, pretty_print_linked_list
 
 
 class Solution:
@@ -62,16 +62,17 @@ class Solution:
         :param head:
         :return:
         """
-        pre = ListNode(0)
+        pre = None
         while head is not None:
             tmp = head.next
             head.next = pre
             pre = head
             head = tmp
+            # 上述 4 行代码, 在 python 下直接可以用下面一行替代
+            # head.next, pre, head = pre, head, head.next
         return pre
 
-
-    def reverse_between(self, head: ListNode, m: int, n: int) -> ListNode:
+    def reverse_between(self, head: ListNode, m: int, n: int):
         """
         反转从位置  m  到  n  的链表。请使用一趟扫描完成反转。
         :param head:
@@ -79,23 +80,60 @@ class Solution:
         :param n:
         :return:
         """
+        if head is None:
+            return head
 
         dummy = ListNode(0)
         dummy.next = head
-        pre = dummy
+        head = dummy
 
         # 1: 找到反转部分的前一个节点
-        for _ in range(m - 1):
-            pre = pre.next
+        pre = None
+        for _ in range(m):
+            pre = head
+            head = head.next
 
         # 2: 反转链表
-        node = pre  # 记录前继节点
-        cur = pre.next
+        mid = head  # 记录前继节点
+        _pre = None
         for _ in range(n - m + 1):
-            cur.next, pre, cur = pre, cur, cur.next  # 此处的交换方法记住
+            if head is None:
+                break
+            tmp = head.next
+            head.next = _pre
+            _pre = head
+            head = tmp
+            # 或者采用如下语句进行链表翻转
+            # head.next, _pre, head = _pre, head, head.next
+
 
         # 3: 将反转后的子链表，拼接回原链表
-        node.next.next = cur
-        node.next = pre
+        pre.next = _pre
+        mid.next = head
 
         return dummy.next
+
+    def sort_list(self, head:ListNode):
+        """
+        在  O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序。
+        思路：归并排序，找中点和合并操作
+        :param head:
+        :return:
+        """
+        pass
+
+    def find_middle(self, head):
+        """
+        找到链表中间的节点.
+        :param head:
+        :return:
+        """
+        slow = head
+        fast = head.next
+        while fast is not None and fast.next is not None:
+            fast = fast.next.next
+            slow = slow.next
+        return slow
+
+
+

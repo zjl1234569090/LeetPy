@@ -14,6 +14,7 @@ class TreeNode:
     """
     二叉树的节点
     """
+
     def __init__(self, x):
         self.val = x
         self.left = None
@@ -34,6 +35,19 @@ class ListNode:
         合并两个链表
         找到链表的中间节点
     """
+
     def __init__(self, x):
         self.val = x
         self.next = None
+
+
+def pretty_print_linked_list(node):
+    import sys
+    while node and node.next:
+        sys.stdout.write(str(node.val) + "->")
+        node = node.next
+
+    if node:
+        print(node.val)
+    else:
+        print("Empty LinkedList")
