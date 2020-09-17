@@ -223,3 +223,75 @@ class Solution:
         mid.next = None
         head = self.merge_two_lists(head, tail)
         return head
+
+    def has_cycle(self, head: ListNode):
+        """
+
+        :param head:
+        :return:
+        """
+        if head is None:
+            return False
+
+        fast = head.next
+        slow = head
+
+        while fast is not None and fast.next is not None:
+            if fast == slow:
+                return True
+            fast = fast.next.next
+            slow = slow.next
+
+        return False
+
+    def has_cycle_v2(self, head: ListNode):
+        """
+        给定一个链表，返回链表开始入环的第一个节点。  如果链表无环，则返回  null.
+        :param head:
+        :return:
+        """
+        if head is None:
+            return head
+
+        fast = head.next
+        slow = head
+        while fast is not None and fast.next is not None:
+            if fast == slow:
+                fast = head
+                slow = slow.next
+                while fast != slow:
+                    fast = fast.next
+                    slow = slow.next
+                return slow
+            fast = fast.next.next
+            slow = slow.next
+        return None
+
+    def is_palindrome(self, head: ListNode):
+        """
+        请判断一个链表是否为回文链表
+        :param head:
+        :return:
+        """
+        if head is None:
+            return head
+        slow = head
+        fast = head.next
+        # 找到中间节点
+        while fast is not None and fast.next is not None:
+            fast = fast.next.next
+            slow = slow.next
+
+        tail = self.reverse_list(slow.next)
+
+        # 断开中间节点
+        slow.next = None
+        while head is not None and tail is not None:
+            if head.val != slow.val:
+                return False
+            head = head.next
+            tail = tail.next
+
+        return True
+
+
