@@ -106,21 +106,75 @@ class Solution:
             # 或者采用如下语句进行链表翻转
             # head.next, _pre, head = _pre, head, head.next
 
-
         # 3: 将反转后的子链表，拼接回原链表
         pre.next = _pre
         mid.next = head
 
         return dummy.next
 
-    def sort_list(self, head:ListNode):
+    def merge_two_lists(self, l1: ListNode, l2: ListNode):
+        """
+        将两个升序链表合并为一个新的升序链表并返回。新链表是通过拼接给定的两个链表的所有节点组成的。
+        :param l1:
+        :param l2:
+        :return:
+        """
+        dummy = ListNode(0)
+        head = dummy
+        while l1 is not None and l2 is not None:
+            if l1.val < l2.val:
+                head.next = l1
+                l1 = l1.next
+            else:
+                head.next = l2
+                l2 = l2.next
+            head = head.next
+
+        while l1 is not None:
+            head.next = l1
+            l1 = l1.next
+            head = head.next
+        while l2 is not None:
+            head.next = l2
+            l2 = l2.next
+            head = head.next
+        return dummy.next
+
+    def partition_list(self, head: ListNode, x: int):
+        """
+        给定一个链表和一个特定值 x，对链表进行分隔，使得所有小于  x  的节点都在大于或等于  x  的节点之前。
+        :param head:
+        :param x:
+        :return:
+        """
+        if head is None:
+            return None
+        head_dummy = ListNode(0)
+        head_dummy.next = head
+        tail_dummy = ListNode(0)
+        tail = tail_dummy
+        head = head_dummy
+        while head.next is not None:
+            if head.next.val < x:
+                head = head.next
+            else:
+                tmp = head.next
+                head.next = head.next.next
+                tail.next = tmp
+                tail = tail.next
+
+        tail.next = None
+        head.next = tail_dummy.next
+        return head_dummy.next
+
+    def sort_list(self, head: ListNode):
         """
         在  O(n log n) 时间复杂度和常数级空间复杂度下，对链表进行排序。
         思路：归并排序，找中点和合并操作
         :param head:
         :return:
         """
-        pass
+        return self.merge_sort(head)
 
     def find_middle(self, head):
         """
@@ -135,5 +189,37 @@ class Solution:
             slow = slow.next
         return slow
 
+    def merge_sort(self, head: ListNode):
+        """
+        归并排序
+        :param head:
+        :return:
+        """
+        if head is None or head.next is None:  # 递归返回的条件
+            return head
+        # 找到中间节点 断开
+        middle = self.find_middle(head)
+        tail = middle.next
+        middle.next = None
+        left = self.merge_sort(head)
+        right = self.merge_sort(tail)
+        return self.merge_two_lists(left, right)
 
+    def reorder_list(self, head: ListNode):
+        """
+        给定一个单链表 L：L0→L1→…→Ln-1→Ln ，
+        将其重新排列后变为： L0→Ln→L1→Ln-1→L2→Ln-2→…
 
+        你不能只是单纯的改变节点内部的值，而是需要实际的进行节点交换。
+        链接：https://leetcode-cn.com/problems/reorder-list
+        :param head:
+        :return:
+        """
+
+        if head is None:
+            return head
+        mid = self.find_middle(head)
+        tail = self.reverse_list(mid.next)
+        mid.next = None
+        head = self.merge_two_lists(head, tail)
+        return head
