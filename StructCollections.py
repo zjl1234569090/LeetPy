@@ -41,13 +41,45 @@ class ListNode:
         self.next = None
 
 
-def pretty_print_linked_list(node):
-    import sys
-    while node and node.next:
-        sys.stdout.write(str(node.val) + "->")
-        node = node.next
 
-    if node:
-        print(node.val)
-    else:
-        print("Empty LinkedList")
+class MinStack:
+    """
+    栈的特点是后入先出
+    """
+    def __init__(self):
+        self.stack = []
+
+    def push(self, x):
+        """
+
+        :param x:
+        :return:
+        """
+        if len(self.stack) > 0:
+            self.stack.append((x, min(x, self.stack[-1][1])))
+        else:
+            self.stack.append((x, x))
+
+    def pop(self):
+        """
+
+        :return:
+        """
+        return self.stack.pop()[0]
+
+    def top(self):
+        """
+
+        :return:
+        """
+        return self.stack[-1][0]
+
+    def get_min(self):
+        """
+
+        :return:
+        """
+        return self.stack[-1][1]
+
+
+
