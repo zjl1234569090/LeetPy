@@ -81,5 +81,45 @@ class MinStack:
         """
         return self.stack[-1][1]
 
+class Queue:
+    def __init__(self):
+        self.cache = []
+        self.out = []
+
+    def push(self, x: int):
+        """
+
+        :param x:
+        :return:
+        """
+        self.cache.append(x)
+
+    def pop(self):
+        """
+
+        :return:
+        """
+        if len(self.out) == 0:
+            while len(self.cache) > 0:
+                self.out.append(self.cache.pop())
+        return self.out.pop()
+
+    def peek(self):
+        """
+
+        :return:
+        """
+        if len(self.out) > 0:
+            return self.out[-1]
+        else:
+            return self.cache[0]
+
+    def empty(self):
+        """
+
+        :return:
+        """
+        return len(self.cache) == 0 and len(self.out) == 0
+
 
 

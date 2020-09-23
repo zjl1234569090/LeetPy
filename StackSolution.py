@@ -106,6 +106,9 @@ class Solution:
                 grid, i + 1, j) + self.dfs_4_number_islands(grid, i, j + 1) + 1
         return 0
 
+    # --------------------------------------------------------------------------------------
+    # 单调栈即是栈中元素有单调性的栈，典型应用为用线性的时间复杂度找左右两侧第一个大于/小于当前元素的位置。|
+    # --------------------------------------------------------------------------------------
     def largest_rectangle_area(self, heights: List[int]) -> int:
         """
         思路：包含当前 bar 最大矩形的边界为左边第一个高度小于当前高度的 bar 和右边第一个高度小于当前高度的 bar
@@ -124,4 +127,21 @@ class Solution:
             max_res = max(max_res, heights[stack.pop()] * (len(heights) - 1 - stack[-1]))
         return max_res
 
-
+    def trap(self, height: List[int]):
+        """
+        给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+        https://leetcode-cn.com/problems/trapping-rain-water/
+        关键点: 单调栈
+        :param height:
+        :return:
+        """
+        stack = []
+        result = 0
+        for i in range(len(height)):
+            while stack and height[i] > height[stack[-1]]:
+                cur = stack.pop()
+                if not stack:
+                    break
+                result += (min(height[stack[-1]], height[i]) - height[cur]) * (i - stack[-1] - 1)
+            stack.append(i)
+        return result
