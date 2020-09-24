@@ -77,6 +77,37 @@ class Solution:
                 result.append(nums[max_queue[0]])  # 队列的头元素最大
         return result
 
+    def shortest_subarray(self, A: List[int], K: int) -> int:
+        """
+        返回 A 的最短的非空连续子数组的长度，该子数组的和至少为 K 。
+        如果没有和至少为 K 的非空子数组，返回 -1 。
+        :param A:
+        :param K:
+        :return:
+        """
+        N = len(A)
+        cdf = [0]  # 数组A的累积和数组
+        for num in A:
+            cdf.append(cdf[-1] + num)
+
+        result = N + 1
+        min_queue = deque()
+
+        for i, csum in enumerate(cdf):
+
+            # 维护一个单调减 队列
+            while min_queue and csum <= cdf[min_queue[-1]]:
+                # 如果当前位置的元素 比 队尾的元素还小，需要调整队尾元素
+                min_queue.pop()
+
+            # 在单调减队列 基础上 检索满足条件的最短子数组的长度
+            while min_queue and csum - cdf[min_queue[0]] >= K:
+                result = min(result, i - min_queue.popleft())
+
+            min_queue.append(i)
+
+        return result if result <= N else -1
+
 
 if __name__ == '__main__':
     qs = Solution()
