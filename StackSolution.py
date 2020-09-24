@@ -145,3 +145,7 @@ class Solution:
                 result += (min(height[stack[-1]], height[i]) - height[cur]) * (i - stack[-1] - 1)
             stack.append(i)
         return result
+
+
+
+

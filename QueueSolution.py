@@ -41,3 +41,43 @@ class Solution:
                         dist_mat[n_i][n_j] = dist_mat[i][j] + 1
                         bfs.append((n_i, n_j))
         return dist_mat
+
+        # ----------------------------------------------------------------------
+        # 单调栈的拓展，可以从数组头 pop 出旧元素，典型应用是以线性时间获得区间最大/最小值。|
+        # ----------------------------------------------------------------------
+
+    def max_sliding_window(self, nums: List[int], k: int) -> List[int]:
+        """
+        给定一个数组 nums，有一个大小为 k 的滑动窗口从数组的最左侧移动到数组的最右侧。你只可以看到在滑动窗口内的 k 个数字。
+        滑动窗口每次只向右移动一位。 返回滑动窗口中的最大值。  
+        进阶：
+        你能在线性时间复杂度内解决此题吗？
+
+        :param nums:
+        :param k:
+        :return:
+        """
+        nums_len = len(nums)
+        if nums_len * k == 0:
+            return []
+        if k == 1:
+            return nums
+        max_queue = deque()
+        result = []
+        for i in range(nums_len):
+
+            # 维护一个长度为k 的单调递增队列, 即队头元素最大, 队尾元素最小
+            if max_queue and max_queue[0] == i - k:
+                max_queue.popleft()  # 长度超过k 最pop 出对头元素
+            while max_queue and nums[max_queue[-1]] < nums[i]:
+                max_queue.pop()  # 新来的元素大于队尾元素，需要调整
+            max_queue.append(i)  # 每个元素都要进入队列进行处理
+
+            if i >= k - 1:  # 保证窗口长度至少为 k 后, 才开始输出结果
+                result.append(nums[max_queue[0]])  # 队列的头元素最大
+        return result
+
+
+if __name__ == '__main__':
+    qs = Solution()
+    print(qs.max_sliding_window([1, 3, -1, -3, 5, 3, 6, 7], 3))
