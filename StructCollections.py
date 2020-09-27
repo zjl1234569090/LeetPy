@@ -8,6 +8,8 @@
 @Description: Definition for a binary tree node.
 
 """
+import heapq
+from typing import List
 
 
 class TreeNode:
@@ -41,11 +43,11 @@ class ListNode:
         self.next = None
 
 
-
 class MinStack:
     """
     栈的特点是后入先出
     """
+
     def __init__(self):
         self.stack = []
 
@@ -80,6 +82,7 @@ class MinStack:
         :return:
         """
         return self.stack[-1][1]
+
 
 class Queue:
     def __init__(self):

@@ -83,6 +83,8 @@ class Solution:
         return i
 
 
+
+
 if __name__ == '__main__':
     nums_1 = [1, 3, 2, 8, 6, 4, 5, 10, 9, 0, 7]
     solution = Solution()
