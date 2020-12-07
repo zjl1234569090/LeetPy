@@ -7,7 +7,6 @@
 @Contact: jiulinzeng@tencent.com
 @Description:
 """
-from StructCollections import *
 
 
 class Solution:
@@ -81,8 +80,6 @@ class Solution:
                 i += 1
         nums[i], nums[end] = nums[end], nums[i]
         return i
-
-
 
 
 if __name__ == '__main__':

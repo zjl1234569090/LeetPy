@@ -8,7 +8,7 @@
 @Description:
 """
 
-from StructCollections import ListNode, pretty_print_linked_list
+from StructCollections import ListNode
 
 
 class Solution:
@@ -293,5 +293,3 @@ class Solution:
             tail = tail.next
 
         return True
-
-
