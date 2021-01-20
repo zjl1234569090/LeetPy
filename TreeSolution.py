@@ -26,9 +26,11 @@ class Solution:
         stack = []
         while root is not None or len(stack) > 0:
             while root is not None:
-                self.result.append(root.val)
-                stack.append(root)  # 存储已经遍历的节点, 用于后续回溯右节点
-                root = root.left
+                self.result.append(root.val)  # 先遍历根节点
+                stack.append(root)  # 关键点! 存储已经遍历的节点, 用于后续回溯右节点
+                root = root.left  # 再遍历左节点
+
+            # 回溯右节点
             node = stack.pop()
             root = node.right
         return self.result
@@ -41,30 +43,32 @@ class Solution:
         """
         stack = []
         while len(stack) > 0 or root is not None:
-            while root is not None:
+            while root is not None:  # 任何一棵子树, 先遍历至最左边的子节点
                 stack.append(root)
                 root = root.left
 
-            node = stack.pop()
-            self.result.append(node.val)
-            root = root.right
+            node = stack.pop()  # 左/中
+            self.result.append(node.val)  # 左/中
+            root = node.right  # 右
         return self.result
 
     def post_order_traversal(self, root: TreeNode):
         stack = []
         node, last_visit = root, None
         while len(stack) > 0 or node is not None:
-            if node is not None:
+            if node is not None:  # 任何一棵子树, 先遍历至最左边的子节点
                 stack.append(node)
                 node = node.left
             else:
-                node = stack[-1]
-                if node.right is not None and last_visit != node.right:
+                node = stack[-1]  # 这里不用 stack.pop(), 先看看右节点是否已经遍历
+                if node.right is not None and last_visit != node.right:  # 右节点存在且未遍历, 则遍历之
                     node = node.right
-                else:
+                else:  # 右节点不存在或者已经遍历, 就执行pop 操作
                     last_visit = stack.pop()
                     self.result.append(last_visit.val)
         return self.result
+
+
 
     def level_order(self, root: TreeNode):
         """

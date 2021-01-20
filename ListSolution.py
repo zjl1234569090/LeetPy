@@ -5,14 +5,15 @@
 @FileName: ListSolution.py
 @Created: 2020/9/10 2:30 下午
 @Contact: jiulinzeng@tencent.com
-@Description:
+@Description: 二叉树基础
 """
 
 from StructCollections import ListNode
 
 
 class Solution:
-    def delete_duplicates(self, head: ListNode):
+    @staticmethod
+    def delete_duplicates(head: ListNode):
         """
         给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
         :param head:
@@ -31,7 +32,8 @@ class Solution:
 
         return head
 
-    def delete_duplicates_v2(self, head: ListNode):
+    @staticmethod
+    def delete_duplicates_v2(head: ListNode):
         """
         给定一个排序链表，删除所有含有重复数字的节点，只保留原始链表中   没有重复出现的数字。
         :param head:
