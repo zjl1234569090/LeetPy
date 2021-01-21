@@ -68,8 +68,6 @@ class Solution:
                     self.result.append(last_visit.val)
         return self.result
 
-
-
     def level_order(self, root: TreeNode):
         """
         层次遍历
@@ -79,13 +77,14 @@ class Solution:
         if root is None:
             return self.result
         bfs = collections.deque([root])
-        while len(bfs) > 0:
+        while len(bfs) > 0:  # 逐层遍历
             self.result.append([])
             level_size = len(bfs)
-            for _ in range(level_size):
+            for _ in range(level_size):  # 遍历层中的每一个节点
                 node = bfs.popleft()
                 self.result[-1].append(node.val)
 
+                # 将子节点入队列, 用于后续遍历
                 if node.left is not None:
                     bfs.append(node.left)
                 if node.right is not None:
@@ -148,7 +147,8 @@ class Solution:
         else:
             return None
 
-    def insert_into_bst(self, root: TreeNode, val: int):
+    @staticmethod
+    def insert_into_bst(root: TreeNode, val: int):
         """
         给定二叉搜索树（BST）的根节点和要插入树中的值，将值插入二叉搜索树。 返回插入后二叉搜索树的根节点.
         :param root:
@@ -156,7 +156,7 @@ class Solution:
         :return:
         """
 
-        if root is None:
+        if root is None:  # 临界点 不要漏
             return TreeNode(val)
 
         node = root
@@ -173,3 +173,38 @@ class Solution:
                     return root
                 else:
                     node = node.left
+
+    @staticmethod
+    def zigzag_level_order(root: TreeNode):
+
+        levels = []  # 遍历结果
+        if root is None:
+            return levels
+
+        s = collections.deque([root])
+
+        start_from_left = True
+        while len(s) > 0:
+            levels.append([])
+            level_size = len(s)
+
+            if start_from_left:
+                for _ in range(level_size):
+                    node = s.popleft()
+                    levels[-1].append(node.val)
+                    if node.left is not None:
+                        s.append(node.left)
+                    if node.right is not None:
+                        s.append(node.right)
+            else:
+                for _ in range(level_size):
+                    node = s.pop()
+                    levels[-1].append(node.val)
+                    if node.right is not None:
+                        s.appendleft(node.right)
+                    if node.left is not None:
+                        s.appendleft(node.left)
+
+            start_from_left = not start_from_left
+
+        return levels
