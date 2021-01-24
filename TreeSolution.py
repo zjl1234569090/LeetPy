@@ -190,20 +190,20 @@ class Solution:
 
             if start_from_left:
                 for _ in range(level_size):
-                    node = s.popleft()
+                    node = s.popleft()  # popleft
                     levels[-1].append(node.val)
                     if node.left is not None:
-                        s.append(node.left)
+                        s.append(node.left)  # append
                     if node.right is not None:
-                        s.append(node.right)
+                        s.append(node.right)  # append
             else:
                 for _ in range(level_size):
-                    node = s.pop()
+                    node = s.pop()  # pop
                     levels[-1].append(node.val)
                     if node.right is not None:
-                        s.appendleft(node.right)
+                        s.appendleft(node.right)  # appendleft
                     if node.left is not None:
-                        s.appendleft(node.left)
+                        s.appendleft(node.left)  # appendleft
 
             start_from_left = not start_from_left
 
