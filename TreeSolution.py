@@ -52,21 +52,20 @@ class Solution:
             root = node.right  # 右
         return self.result
 
-    def post_order_traversal(self, root: TreeNode):
-        stack = []
-        node, last_visit = root, None
-        while len(stack) > 0 or node is not None:
-            if node is not None:  # 任何一棵子树, 先遍历至最左边的子节点
-                stack.append(node)
-                node = node.left
-            else:
-                node = stack[-1]  # 这里不用 stack.pop(), 先看看右节点是否已经遍历
-                if node.right is not None and last_visit != node.right:  # 右节点存在且未遍历, 则遍历之
-                    node = node.right
-                else:  # 右节点不存在或者已经遍历, 就执行pop 操作
-                    last_visit = stack.pop()
-                    self.result.append(last_visit.val)
-        return self.result
+    @staticmethod
+    def post_order_traversal(root: TreeNode):
+        if not root:
+            return []
+        stack = [root]
+        res = []
+        while stack:
+            node = stack.pop()
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+            res.append(node.val)
+        return res[::-1]
 
     def level_order(self, root: TreeNode):
         """
