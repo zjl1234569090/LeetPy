@@ -75,3 +75,69 @@ def reverse_between(head:ListNode):
     for _ in range(m):
         pre = head
         head = head.next
+
+    to_tail = head
+
+    _pre = None
+    for _ in range(n - m + 1):
+        tmp = head.next
+        head.next = _pre
+        _pre = head
+        head = tmp
+
+    to_tail.next = head
+    pre.next = _pre
+    return dummy_node.next
+
+
+def find_middle(head:ListNode):
+    """
+    寻找中间节点
+    """
+    if not head:
+        return head
+
+    slow = head
+    fast = head.next
+    while fast is not None:
+        slow = slow.next
+        fast = fast.next
+    return slow
+
+def merge_two_sorted_list(list_a:ListNode, list_b:ListNode):
+    dummy_node = ListNode(0)
+    head = dummy_node
+    while list_a is not None and list_b is not None:
+        if list_a.val <= list_b.val:
+            head.next = list_a
+            list_a = list_a.next
+        else:
+            head.next = list_b
+            list_b = list_b.next
+        head = head.next
+
+    if list_a is not None:
+        head.next = list_a
+    if list_b is not None:
+        head.next = list_b
+    return dummy_node.next
+
+def merge_sort(head:ListNode):
+    if not head:
+        return head
+    mid = find_middle(head)
+    second_part = mid.next
+    mid.next = None
+    first_part = head
+    left = merge_sort(first_part)
+    right = merge_sort(second_part)
+
+    return merge_two_sorted_list(left, right)
+
+def reorder_list(head:ListNode):
+    if head is None:
+        return head
+    mid = find_middle(head)
+    tail = reverse_list(mid.next)
+    mid.next = None
+    return merge_two_sorted_list(head, tail)

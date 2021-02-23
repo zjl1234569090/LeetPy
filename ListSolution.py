@@ -300,3 +300,40 @@ class Solution:
             tail = tail.next
 
         return True
+
+    @staticmethod
+    def getDecimalValue(head: ListNode) -> int:
+        """
+        1290. 二进制链表转整数
+        https://leetcode-cn.com/problems/convert-binary-number-in-a-linked-list-to-integer/
+        :param head:
+        :return:
+        """
+        res = 0
+        cur = head
+        while cur:
+            res = res * 2 + cur.val
+            cur = cur.next
+        return res
+
+    @staticmethod
+    def getIntersectionNode(headA: ListNode, headB: ListNode) -> ListNode:
+        """
+        160. 相交链表
+        https://leetcode-cn.com/problems/intersection-of-two-linked-lists/
+        """
+        pA, pB = headA, headB
+        while pA != pB:
+            pA = headB if not pA else pA.next
+            pB = headA if not pB else pB.next
+        return pA
+
+    @staticmethod
+    def oddEvenList(self, head: ListNode) -> ListNode:
+        """
+        328. 奇偶链表
+        https://leetcode-cn.com/problems/odd-even-linked-list/
+        :param self:
+        :param head:
+        :return:
+        """
