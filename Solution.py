@@ -42,7 +42,7 @@ class Solution:
                 r += 1
             else:
                 result.append(left_nums[l])
-                r += 1
+                l += 1
         result += left_nums[l:]
         result += right_nums[r:]
         return result
@@ -72,6 +72,16 @@ class Solution:
         :return: 分界点
         """
 
+        p = nums[end]
+        i = start
+        for j in range(start, end):
+            if nums[j] < p:
+                nums[i], nums[j] = nums[j], nums[i]
+                i += 1
+        nums[i], nums[end] = nums[end], nums[i]
+        return i
+
+    def _partition(self, nums, start, end):
         p = nums[end]
         i = start
         for j in range(start, end):

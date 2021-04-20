@@ -13,6 +13,35 @@ from StructCollections import ListNode
 
 class Solution:
     @staticmethod
+    def insertionSortList(head: ListNode) -> ListNode:
+        """
+        147. 对链表进行插入排序
+        https://leetcode-cn.com/problems/insertion-sort-list/
+        :param head:
+        :return:
+        """
+        dummy = ListNode(0)
+        dummy.next = head
+        last = head  # 已排好序的链表的最后一个节点
+        cur = head.next
+        while cur:
+            if cur.val >= last.val:
+                last = last.next
+            else:
+                last.next = cur.next  # 保存下一个待排序节点
+                # 重头遍历, 寻找 插入点
+                pre = dummy
+                while pre.next.val <= cur.val:
+                    pre = pre.next
+
+                # 插入节点
+                cur.next = pre.next
+                pre.next = cur
+            # 更新待排序节点
+            cur = last.next
+        return dummy.next
+
+    @staticmethod
     def delete_duplicates(head: ListNode):
         """
         给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
@@ -327,13 +356,3 @@ class Solution:
             pA = headB if not pA else pA.next
             pB = headA if not pB else pB.next
         return pA
-
-    @staticmethod
-    def oddEvenList(self, head: ListNode) -> ListNode:
-        """
-        328. 奇偶链表
-        https://leetcode-cn.com/problems/odd-even-linked-list/
-        :param self:
-        :param head:
-        :return:
-        """
