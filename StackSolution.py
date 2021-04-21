@@ -10,9 +10,49 @@
 import math
 from typing import List
 import collections
+from collections import deque
 
 
 class Solution:
+    @staticmethod
+    def wallsAndGates(self, rooms: List[List[int]]) -> None:
+        """
+        286. 墙与门
+        https://leetcode-cn.com/problems/walls-and-gates/
+
+        考察BFS
+        :param self:
+        :param rooms:
+        :return:
+        """
+
+        def wallsAndGates(self, rooms: List[List[int]]) -> None:
+            """
+            Do not return anything, modify rooms in-place instead.
+            """
+            if not rooms:
+                return rooms
+            m, n = len(rooms), len(rooms[0])
+
+            # Seach All Gatas
+            room_queue = deque()
+            for r in range(m):
+                for c in range(n):
+                    if rooms[r][c] == 0:
+                        room_queue.append((r, c, 0))
+
+            # Update Distance
+            while room_queue:
+                r, c, dist = room_queue.popleft()
+                # Iterate in four directions
+                for dr, dc in zip((-1, 1, 0, 0), (0, 0, -1, 1)):
+                    newr, newc = r + dr, c + dc
+                    # Find [Valid & Unvisited & Empty] Room
+                    if 0 <= newr < m and 0 <= newc < n and rooms[newr][newc] == 2147483647:
+                        rooms[newr][newc] = dist + 1
+                        room_queue.append((newr, newc, dist + 1))
+
+
     @staticmethod
     def longestPalindrome(s: str) -> str:
         """5. 最长回文子串
