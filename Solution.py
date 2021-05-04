@@ -7,12 +7,36 @@
 @Contact: jiulinzeng@tencent.com
 @Description:
 """
-
+from StructCollections import *
 
 class Solution:
 
     def __init__(self):
         pass
+
+    @staticmethod
+    def postorderTraversal(root: TreeNode) -> List[int]:
+        res = []
+        if not root:
+            return res
+        stack = []
+        node = root
+        last_visited_node = None
+        while stack or node:
+            while node:
+                stack.append(node)
+                node = node.left if node.left is not None else node.right
+            node = stack.pop()
+            res.append(node.val)
+            if stack and stack[-1].left == node:
+                node = stack[-1].right
+            else:
+                node = None
+        return res
+
+
+
+
 
     def merge_sort(self, nums):
         """

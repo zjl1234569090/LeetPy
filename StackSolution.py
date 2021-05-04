@@ -14,6 +14,16 @@ from collections import deque
 
 
 class Solution:
+
+    @staticmethod
+    def numIslands(grid: List[List[str]]) -> int:
+        """
+        200. 岛屿数量
+        https://leetcode-cn.com/problems/number-of-islands/
+        :param grid:
+        :return:
+        """
+        pass
     @staticmethod
     def wallsAndGates(self, rooms: List[List[int]]) -> None:
         """
