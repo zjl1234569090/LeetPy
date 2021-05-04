@@ -8,6 +8,7 @@
 @Description:
 """
 from typing import List
+from random import randint
 import heapq
 
 
@@ -23,6 +24,54 @@ class Solution:
         s = [str(x) for x in nums]
         self.quick_sort4str(s, 0, len(s) - 1)
         return ''.join(s)
+
+    def merge_sort_v0(self, arr):
+        """归并排序"""
+        if len(arr) == 1:
+            return arr
+        # 使用二分法将数列分两个
+        mid = len(arr) // 2
+        left = arr[:mid]
+        right = arr[mid:]
+        # 使用递归运算
+        return self.merge_v0(self.merge_sort_v0(left), self.merge_sort_v0(right))
+
+    def merge_v0(self, left, right):
+        """排序合并两个数列"""
+        result = []
+        # 两个数列都有值
+        while len(left) > 0 and len(right) > 0:
+            # 左右两个数列第一个最小放前面
+            if left[0] <= right[0]:
+                result.append(left.pop(0))
+            else:
+                result.append(right.pop(0))
+        # 只有一个数列中还有值，直接添加
+        result += left
+        result += right
+        return result
+
+    def merge_sort_v1(self, nums: List[int]):
+        """
+        非递归
+        """
+        n = len(nums)
+        if n <= 1:
+            return nums
+        sorted_size = 1  # 当前有序子数组的长度, 初始化 1
+        while sorted_size < n:
+            left = 0
+            while left < n:
+                m = left + sorted_size - 1
+                if m >= n:
+                    break
+                right = min(m + sorted_size, n - 1)
+                # print("left:", nums[left:m + 1], "right:", nums[m + 1:right + 1])
+                nums[left:right + 1] = self.merge_v0(nums[left:m + 1], nums[m + 1:right + 1])
+                # print(nums)
+                left = right + 1
+            sorted_size <<= 1
+        return nums
 
     @staticmethod
     def quick_sort4str(s: str, start: int, end: int):
@@ -87,3 +136,28 @@ class Solution:
                 all_buckets.pop(nums[i - k] // bucket_size)
 
         return False
+
+
+if __name__ == '__main__':
+    solution = Solution()
+
+    test_num = 10000
+    succ = 0
+    fail = 0
+    for _ in range(test_num):
+        nums_len = randint(1, 1000)
+        nums = [randint(0, 10) for _ in range(nums_len)]
+        print("Before sorting:", nums)
+        ans = sorted(nums)
+        ans0 = solution.merge_sort_v1(nums)
+        ok = all(x[0] == x[1] for x in zip(ans, ans0))
+        if ok:
+            succ += 1
+            print("After sorting:", ans0)
+            print("Nice")
+        else:
+            print(ans)
+            print(ans0)
+            print("Failed !")
+            break
+    print("test_num:{}, succ:{}".format(test_num, succ))
