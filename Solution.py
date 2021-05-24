@@ -7,12 +7,36 @@
 @Contact: jiulinzeng@tencent.com
 @Description:
 """
-
+from StructCollections import *
 
 class Solution:
 
     def __init__(self):
         pass
+
+    @staticmethod
+    def postorderTraversal(root: TreeNode) -> List[int]:
+        res = []
+        if not root:
+            return res
+        stack = []
+        node = root
+        last_visited_node = None
+        while stack or node:
+            while node:
+                stack.append(node)
+                node = node.left if node.left is not None else node.right
+            node = stack.pop()
+            res.append(node.val)
+            if stack and stack[-1].left == node:
+                node = stack[-1].right
+            else:
+                node = None
+        return res
+
+
+
+
 
     def merge_sort(self, nums):
         """
@@ -42,7 +66,7 @@ class Solution:
                 r += 1
             else:
                 result.append(left_nums[l])
-                r += 1
+                l += 1
         result += left_nums[l:]
         result += right_nums[r:]
         return result
@@ -72,6 +96,16 @@ class Solution:
         :return: 分界点
         """
 
+        p = nums[end]
+        i = start
+        for j in range(start, end):
+            if nums[j] < p:
+                nums[i], nums[j] = nums[j], nums[i]
+                i += 1
+        nums[i], nums[end] = nums[end], nums[i]
+        return i
+
+    def _partition(self, nums, start, end):
         p = nums[end]
         i = start
         for j in range(start, end):

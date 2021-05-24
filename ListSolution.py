@@ -13,6 +13,35 @@ from StructCollections import ListNode
 
 class Solution:
     @staticmethod
+    def insertionSortList(head: ListNode) -> ListNode:
+        """
+        147. 对链表进行插入排序
+        https://leetcode-cn.com/problems/insertion-sort-list/
+        :param head:
+        :return:
+        """
+        dummy = ListNode(0)
+        dummy.next = head
+        last = head  # 已排好序的链表的最后一个节点
+        cur = head.next
+        while cur:
+            if cur.val >= last.val:
+                last = last.next
+            else:
+                last.next = cur.next  # 保存下一个待排序节点
+                # 重头遍历, 寻找 插入点
+                pre = dummy
+                while pre.next.val <= cur.val:
+                    pre = pre.next
+
+                # 插入节点
+                cur.next = pre.next
+                pre.next = cur
+            # 更新待排序节点
+            cur = last.next
+        return dummy.next
+
+    @staticmethod
     def delete_duplicates(head: ListNode):
         """
         给定一个排序链表，删除所有重复的元素，使得每个元素只出现一次。
@@ -58,7 +87,8 @@ class Solution:
 
         return dummy.next
 
-    def reverse_list(self, head: ListNode):
+    @staticmethod
+    def reverse_list(head: ListNode):
         """
         翻转链表.
         :param head:
@@ -74,7 +104,8 @@ class Solution:
             # head.next, pre, head = pre, head, head.next
         return pre
 
-    def reverse_between(self, head: ListNode, m: int, n: int):
+    @staticmethod
+    def reverse_between(head: ListNode, m: int, n: int):
         """
         反转从位置  m  到  n  的链表。请使用一趟扫描完成反转。
         :param head:
@@ -89,7 +120,7 @@ class Solution:
         dummy.next = head
         head = dummy
 
-        # 1: 找到反转部分的前一个节点
+        # 1: 找到反转部分的第一个
         pre = None
         for _ in range(m):
             pre = head
@@ -142,7 +173,8 @@ class Solution:
             head = head.next
         return dummy.next
 
-    def partition_list(self, head: ListNode, x: int):
+    @staticmethod
+    def partition_list(head: ListNode, x: int):
         """
         给定一个链表和一个特定值 x，对链表进行分隔，使得所有小于  x  的节点都在大于或等于  x  的节点之前。
         :param head:
@@ -178,7 +210,8 @@ class Solution:
         """
         return self.merge_sort(head)
 
-    def find_middle(self, head):
+    @staticmethod
+    def find_middle(head):
         """
         找到链表中间的节点.
         :param head:
@@ -226,7 +259,8 @@ class Solution:
         head = self.merge_two_lists(head, tail)
         return head
 
-    def has_cycle(self, head: ListNode):
+    @staticmethod
+    def has_cycle(head: ListNode):
         """
 
         :param head:
@@ -289,9 +323,36 @@ class Solution:
         # 断开中间节点
         slow.next = None
         while head is not None and tail is not None:
-            if head.val != slow.val:
+            if head.val != tail.val:
                 return False
             head = head.next
             tail = tail.next
 
         return True
+
+    @staticmethod
+    def getDecimalValue(head: ListNode) -> int:
+        """
+        1290. 二进制链表转整数
+        https://leetcode-cn.com/problems/convert-binary-number-in-a-linked-list-to-integer/
+        :param head:
+        :return:
+        """
+        res = 0
+        cur = head
+        while cur:
+            res = res * 2 + cur.val
+            cur = cur.next
+        return res
+
+    @staticmethod
+    def getIntersectionNode(headA: ListNode, headB: ListNode) -> ListNode:
+        """
+        160. 相交链表
+        https://leetcode-cn.com/problems/intersection-of-two-linked-lists/
+        """
+        pA, pB = headA, headB
+        while pA != pB:
+            pA = headB if not pA else pA.next
+            pB = headA if not pB else pB.next
+        return pA

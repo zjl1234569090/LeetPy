@@ -52,21 +52,39 @@ class Solution:
             root = node.right  # 右
         return self.result
 
-    def post_order_traversal(self, root: TreeNode):
+    def postorderTraversal(self, root: TreeNode) -> List[int]:
+        res = []  # 用来存储后序遍历节点的值
         stack = []
-        node, last_visit = root, None
-        while len(stack) > 0 or node is not None:
-            if node is not None:  # 任何一棵子树, 先遍历至最左边的子节点
-                stack.append(node)
-                node = node.left
+        node = root
+        while stack or node:
+            while node:
+                stack.append(node)  # 第一次入栈的是根节点
+                # 判断当前节点的左子树是否存在，若存在则持续左下行，若不存在就转向右子树
+                node = node.left if node.left is not None else node.right
+            # 循环结束说明走到了叶子节点，没有左右子树了，该叶子节点即为当前栈顶元素，应该访问了
+            node = stack.pop()  # 取出栈顶元素进行访问
+            res.append(node.val)  # 将栈顶元素也即当前节点的值添加进res
+            # （下面的stack[-1]是执行完上面那句取出栈顶元素后的栈顶元素）
+            if stack and stack[-1].left == node:  # 若栈不为空且当前节点是栈顶元素的左节点
+                node = stack[-1].right  # 则转向遍历右节点
             else:
-                node = stack[-1]  # 这里不用 stack.pop(), 先看看右节点是否已经遍历
-                if node.right is not None and last_visit != node.right:  # 右节点存在且未遍历, 则遍历之
-                    node = node.right
-                else:  # 右节点不存在或者已经遍历, 就执行pop 操作
-                    last_visit = stack.pop()
-                    self.result.append(last_visit.val)
-        return self.result
+                node = None  # 没有左子树或右子树，强迫退栈
+        return res
+
+    @staticmethod
+    def post_order_traversal(root: TreeNode):
+        if not root:
+            return []
+        stack = [root]
+        res = []
+        while stack:
+            node = stack.pop()
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+            res.append(node.val)
+        return res[::-1]
 
     def level_order(self, root: TreeNode):
         """
@@ -190,20 +208,20 @@ class Solution:
 
             if start_from_left:
                 for _ in range(level_size):
-                    node = s.popleft()
+                    node = s.popleft()  # popleft
                     levels[-1].append(node.val)
                     if node.left is not None:
-                        s.append(node.left)
+                        s.append(node.left)  # append
                     if node.right is not None:
-                        s.append(node.right)
+                        s.append(node.right)  # append
             else:
                 for _ in range(level_size):
-                    node = s.pop()
+                    node = s.pop()  # pop
                     levels[-1].append(node.val)
                     if node.right is not None:
-                        s.appendleft(node.right)
+                        s.appendleft(node.right)  # appendleft
                     if node.left is not None:
-                        s.appendleft(node.left)
+                        s.appendleft(node.left)  # appendleft
 
             start_from_left = not start_from_left
 
