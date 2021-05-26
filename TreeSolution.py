@@ -9,6 +9,7 @@
 """
 from StructCollections import TreeNode
 import collections
+from typing import List
 
 
 class Solution:
